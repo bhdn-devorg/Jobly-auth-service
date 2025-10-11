@@ -27,6 +27,6 @@ public class Company {
     @Column(name = "website_link")
     private String websiteLink;
 
-    @Column(name = "linkdein_link")
+    @Column(name = "linkedin_link")
     private String linkedinLink;
 }

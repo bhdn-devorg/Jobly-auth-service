@@ -2,13 +2,14 @@ package dev.bhdn.jobly.auth.service.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Entity
 @Table(name = "users")
@@ -28,7 +29,7 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Enumerated
+    @JdbcTypeCode(SqlTypes.VARCHAR)
     @Column(name = "account_type", nullable = false)
     private AccountType accountType;
 

@@ -1,0 +1,28 @@
+databaseChangeLog:
+  - changeSet:
+      id: 04-create-companies-table
+      author: Bohdan Hovorukha
+      changes:
+        - createTable:
+            tableName: companies
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: logo_link
+                  type: varchar(255)
+              - column:
+                  name: website_link
+                  type: varchar(255)
+              - column:
+                  name: linkedin_link
+                  type: varchar(255)

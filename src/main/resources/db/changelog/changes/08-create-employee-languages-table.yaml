@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-employee-languages-table
+      author: Bohdan Hovorukha
+      changes:
+        - createTable:
+            tableName: employee_languages
+            columns:
+              - column:
+                  name: employee_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_employee_languages_employee_id
+                    references: employees(id)
+                    primaryKey: true
+                    deleteCascade: true
+              - column:
+                  name: language_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_employee_languages_language_id
+                    references: languages(id)
+                    primaryKey: true
+                    deleteCascade: true

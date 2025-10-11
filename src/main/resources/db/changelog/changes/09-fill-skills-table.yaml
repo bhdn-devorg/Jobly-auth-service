@@ -1,0 +1,65 @@
+databaseChangeLog:
+  - changeSet:
+      id: fill-skills-table
+      author: Bohdan Hovorukha
+      changes:
+        - insert:
+            tableName: skills
+            columns:
+              - column:
+                  name: name
+                  value: Java
+        - insert:
+            tableName: skills
+            columns:
+              - column:
+                  name: name
+                  value: Spring boot
+        - insert:
+            tableName: skills
+            columns:
+              - column:
+                  name: name
+                  value: SQL
+        - insert:
+            tableName: skills
+            columns:
+              - column:
+                  name: name
+                  value: Docker
+        - insert:
+            tableName: skills
+            columns:
+              - column:
+                  name: name
+                  value: Git
+        - insert:
+            tableName: skills
+            columns:
+              - column:
+                  name: name
+                  value: REST API
+        - insert:
+            tableName: skills
+            columns:
+              - column:
+                  name: name
+                  value: JUnit
+        - insert:
+            tableName: skills
+            columns:
+              - column:
+                  name: name
+                  value: Postman
+        - insert:
+            tableName: skills
+            columns:
+              - column:
+                  name: name
+                  value: Kubernetes
+        - insert:
+            tableName: skills
+            columns:
+              - column:
+                  name: name
+                  value: CI/CD

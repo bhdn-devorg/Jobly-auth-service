@@ -26,19 +26,19 @@ public class EmployeeProfile {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "employees_skills",
-            joinColumns = @JoinColumn(name = "employee_profile_id"),
+    @JoinTable(name = "employee_skills",
+            joinColumns = @JoinColumn(name = "employee_id"),
             inverseJoinColumns = @JoinColumn(name = "skill_id")
     )
     private Set<Skill> skills = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "employees_languages",
-            joinColumns = @JoinColumn(name = "employee_profile_id"),
+    @JoinTable(name = "employee_languages",
+            joinColumns = @JoinColumn(name = "employee_id"),
             inverseJoinColumns = @JoinColumn(name = "language_id")
     )
     private Set<Language> languages = new HashSet<>();

@@ -1,0 +1,28 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-recruiters-table
+      author: Bohdan Hovorukha
+      changes:
+        - createTable:
+            tableName: recruiters
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_recruiters_user_id
+                    references: users(id)
+                    nullable: false
+              - column:
+                  name: company_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_recruiters_company_id
+                    references: companies(id)
+                    nullable: false

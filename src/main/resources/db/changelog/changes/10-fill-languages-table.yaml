@@ -1,0 +1,65 @@
+databaseChangeLog:
+  - changeSet:
+      id: fill-languages-table
+      author: Bohdan Hovorukha
+      changes:
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: name
+                  value: English
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: name
+                  value: German
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: name
+                  value: French
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: name
+                  value: Spanish
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: name
+                  value: Italian
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: name
+                  value: Ukrainian
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: name
+                  value: Polish
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: name
+                  value: Czech
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: name
+                  value: Russian
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: name
+                  value: Chinese
