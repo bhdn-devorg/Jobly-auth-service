@@ -1,4 +1,4 @@
-package dev.bhdn.jobly_auth_service.model;
+package dev.bhdn.jobly.auth.service.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
