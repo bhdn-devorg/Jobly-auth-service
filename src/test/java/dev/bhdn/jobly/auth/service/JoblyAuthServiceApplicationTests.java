@@ -1,4 +1,4 @@
-package dev.bhdn.jobly_auth_service;
+package dev.bhdn.jobly.auth.service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
