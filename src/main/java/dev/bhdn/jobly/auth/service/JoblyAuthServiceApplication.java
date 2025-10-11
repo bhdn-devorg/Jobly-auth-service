@@ -1,4 +1,4 @@
-package dev.bhdn.jobly_auth_service;
+package dev.bhdn.jobly.auth.service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
