@@ -3,14 +3,13 @@ package dev.bhdn.jobly.auth.service.service;
 import dev.bhdn.jobly.auth.service.dto.laguage.LanguageDto;
 import dev.bhdn.jobly.auth.service.dto.laguage.LanguageResponseDto;
 import java.util.List;
-import java.util.Optional;
 
 public interface LanguageService {
     LanguageResponseDto addLanguage(LanguageDto languageDto);
 
     List<LanguageResponseDto> getAllLanguages();
 
-    Optional<LanguageResponseDto> getLanguageById(Long id);
+    LanguageResponseDto getLanguageById(Long id);
 
     LanguageResponseDto updateLanguage(Long id, LanguageDto languageDto);
 
