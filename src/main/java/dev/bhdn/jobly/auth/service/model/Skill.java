@@ -19,8 +19,10 @@ public class Skill {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false, unique = true)
     private String name;
+
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted = false;
 }
