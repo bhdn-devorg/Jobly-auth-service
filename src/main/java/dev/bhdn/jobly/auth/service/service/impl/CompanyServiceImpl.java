@@ -14,23 +14,23 @@ import dev.bhdn.jobly.auth.service.repository.CompanyRepository;
 import dev.bhdn.jobly.auth.service.service.CompanyService;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
 public class CompanyServiceImpl implements CompanyService {
     private static final String FOLDER_PATH = "/Apps/Jobly/companies/";
-    public static final long CREDENTIAL_EXPIRES_AT = 0L;
-    public static final String IMAGE_JPEG = "image/jpeg";
-    public static final String IMAGE_PNG = "image/png";
+    private static final long CREDENTIAL_EXPIRES_AT = 0L;
+    private static final String IMAGE_JPEG = "image/jpeg";
+    private static final String IMAGE_PNG = "image/png";
     private final CompanyRepository companyRepository;
     private final CompanyMapper companyMapper;
     private DbxClientV2 client;
