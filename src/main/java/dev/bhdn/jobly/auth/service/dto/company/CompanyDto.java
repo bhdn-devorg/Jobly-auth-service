@@ -7,7 +7,6 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class CompanyDto {
     private String name;
-    private String logoLink;
     private String websiteLink;
     private String linkedinLink;
 }

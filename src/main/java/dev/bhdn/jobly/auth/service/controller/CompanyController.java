@@ -6,15 +6,8 @@ import dev.bhdn.jobly.auth.service.service.CompanyService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,8 +16,11 @@ public class CompanyController {
     private final CompanyService companyService;
 
     @PostMapping
-    public CompanyResponseDto createCompany(@RequestBody CompanyDto companyDto) {
-        return companyService.createCompany(companyDto);
+    public CompanyResponseDto createCompany(
+            @RequestPart(value = "company") CompanyDto companyDto,
+            @RequestPart(value = "photo", required = false) MultipartFile photo
+    ) {
+        return companyService.createCompany(companyDto, photo);
     }
 
     @GetMapping
@@ -39,9 +35,11 @@ public class CompanyController {
 
     @PutMapping("/{id}")
     public CompanyResponseDto updateCompany(
-            @PathVariable Long id, @RequestBody CompanyDto companyDto
+            @PathVariable Long id,
+            @RequestPart(value = "photo", required = false) MultipartFile photo,
+            @RequestPart(value = "company") CompanyDto companyDto
     ) {
-        return companyService.updateCompany(id, companyDto);
+        return companyService.updateCompany(id, companyDto, photo);
     }
 
     @DeleteMapping("/{id}")
