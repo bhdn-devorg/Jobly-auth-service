@@ -10,9 +10,9 @@ public interface EmployeeProfileService {
 
     List<EmployeeProfileResponseDto> getAllEmployeeProfiles();
 
-    Optional<EmployeeProfileResponseDto> getEmployeeProfileById(Long id);
+    EmployeeProfileResponseDto getEmployeeProfileById(Long id);
 
-    EmployeeProfileResponseDto updateEmployeeProfile(EmployeeProfileDto profileDto);
+    EmployeeProfileResponseDto updateEmployeeProfile(Long id, EmployeeProfileDto profileDto);
 
     void deleteEmployeeProfile(Long id);
 }

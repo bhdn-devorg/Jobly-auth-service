@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -17,6 +18,7 @@ import org.hibernate.annotations.SQLRestriction;
 @NoArgsConstructor
 @SQLDelete(sql = "UPDATE companies SET is_deleted = true WHERE id = ?")
 @SQLRestriction("is_deleted = false")
+@Accessors(chain = true)
 public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

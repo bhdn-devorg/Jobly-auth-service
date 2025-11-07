@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.experimental.Accessors;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -15,6 +16,7 @@ import org.hibernate.annotations.SQLRestriction;
 @Data
 @SQLDelete(sql = "UPDATE languages SET is_deleted = true WHERE id = ?")
 @SQLRestriction("is_deleted = false")
+@Accessors(chain = true)
 public class Language {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
