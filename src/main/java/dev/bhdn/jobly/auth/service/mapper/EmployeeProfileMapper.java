@@ -9,35 +9,56 @@ import dev.bhdn.jobly.auth.service.model.Skill;
 import dev.bhdn.jobly.auth.service.model.User;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.Mappings;
 import org.mapstruct.Named;
 
-@Mapper(config = MapperConfig.class)
+@Mapper(config = MapperConfig.class, uses = {SkillMapper.class, LanguageMapper.class})
 public interface EmployeeProfileMapper {
-    @Mapping(target = "userId", source = "user.id")
-    @Mapping(target = "skillIds", source = "skills.id", qualifiedByName = "mapSkillsToIds")
-    @Mapping(target = "languageIds", source = "languages.id", qualifiedByName = "mapLanguagesToIds")
+    @Mappings({
+            @Mapping(target = "userId", source = "user.id"),
+            @Mapping(target = "skillIds", ignore = true),
+            @Mapping(target = "languageIds", ignore = true)
+    })
     EmployeeProfileResponseDto toDto(EmployeeProfile employeeProfile);
 
-    @Mapping(target = "user", source = "userId", qualifiedByName = "getUserFromId")
-    @Mapping(target = "skills", source = "skillIds", qualifiedByName = "getSkillsFromIds")
-    @Mapping(target = "languages", source = "languageIds", qualifiedByName = "getLanguagesFromIds")
-    EmployeeProfile toModel(EmployeeProfileDto employeeProfileDto);
-
-    @Named("mapSkillsToIds")
-    default Set<Long> mapSkillsTpIds(Set<Skill> skills) {
-        return skills.stream()
+    @AfterMapping
+    default void setSkillAndLanguageIds(
+            @MappingTarget EmployeeProfileResponseDto employeeProfileResponseDto,
+            EmployeeProfile employeeProfile
+    ) {
+        Set<Long> skillIds = employeeProfile.getSkills().stream()
                 .map(Skill::getId)
                 .collect(Collectors.toSet());
-    }
 
-    @Named("mapLanguagesToIds")
-    default Set<Long> mapLanguagesToIds(Set<Language> languages) {
-        return languages.stream()
+        Set<Long> languageIds = employeeProfile.getLanguages().stream()
                 .map(Language::getId)
                 .collect(Collectors.toSet());
+
+        employeeProfileResponseDto.setSkillIds(skillIds);
+        employeeProfileResponseDto.setLanguageIds(languageIds);
     }
+
+    @Mappings({
+            @Mapping(
+                    target = "user",
+                    source = "userId",
+                    qualifiedByName = "getUserFromId"
+            ),
+            @Mapping(target = "skills",
+                    source = "skillIds",
+                    qualifiedByName = "getSkillsFromIds"
+            ),
+            @Mapping(
+                    target = "languages",
+                    source = "languageIds",
+                    qualifiedByName = "getLanguagesFromIds"
+            )
+    })
+    EmployeeProfile toModel(EmployeeProfileDto employeeProfileDto);
 
     @Named("getUserFromId")
     default User getUserFromId(Long id) {

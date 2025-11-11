@@ -8,16 +8,21 @@ import dev.bhdn.jobly.auth.service.model.RecruiterProfile;
 import dev.bhdn.jobly.auth.service.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 import org.mapstruct.Named;
 
 @Mapper(config = MapperConfig.class)
 public interface RecruiterProfileMapper {
-    @Mapping(target = "userId", source = "user.id")
-    @Mapping(target = "companyId", source = "company.id")
+    @Mappings({
+            @Mapping(target = "userId", source = "user.id"),
+            @Mapping(target = "companyId", source = "company.id")
+    })
     RecruiterProfileResponseDto toDto(RecruiterProfile recruiterProfile);
 
-    @Mapping(target = "user", source = "userId", qualifiedByName = "getUserFromId")
-    @Mapping(target = "company", source = "companyId", qualifiedByName = "getCompanyFromId")
+    @Mappings({
+            @Mapping(target = "user", source = "userId", qualifiedByName = "getUserFromId"),
+            @Mapping(target = "company", source = "companyId", qualifiedByName = "getCompanyFromId")
+    })
     RecruiterProfile toModel(RecruiterProfileDto recruiterProfileDto);
 
     @Named("getUserFromId")

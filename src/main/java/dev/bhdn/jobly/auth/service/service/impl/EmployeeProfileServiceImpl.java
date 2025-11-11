@@ -6,9 +6,8 @@ import dev.bhdn.jobly.auth.service.mapper.EmployeeProfileMapper;
 import dev.bhdn.jobly.auth.service.model.EmployeeProfile;
 import dev.bhdn.jobly.auth.service.repository.EmployeeProfileRepository;
 import dev.bhdn.jobly.auth.service.service.EmployeeProfileService;
-import java.util.List;
-
 import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

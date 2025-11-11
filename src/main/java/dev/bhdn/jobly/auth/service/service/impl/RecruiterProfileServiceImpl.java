@@ -6,15 +6,14 @@ import dev.bhdn.jobly.auth.service.mapper.RecruiterProfileMapper;
 import dev.bhdn.jobly.auth.service.model.RecruiterProfile;
 import dev.bhdn.jobly.auth.service.repository.RecruiterProfileRepository;
 import dev.bhdn.jobly.auth.service.service.RecruiterProfileService;
-import java.util.List;
-
 import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class RecruiterProfileImpl implements RecruiterProfileService {
+public class RecruiterProfileServiceImpl implements RecruiterProfileService {
     private final RecruiterProfileRepository recruiterProfileRepository;
     private final RecruiterProfileMapper recruiterProfileMapper;
 

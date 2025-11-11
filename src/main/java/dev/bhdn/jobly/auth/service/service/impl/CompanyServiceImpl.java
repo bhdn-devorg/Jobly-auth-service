@@ -1,27 +1,15 @@
 package dev.bhdn.jobly.auth.service.service.impl;
 
-import com.dropbox.core.DbxException;
-import com.dropbox.core.DbxRequestConfig;
-import com.dropbox.core.oauth.DbxCredential;
-import com.dropbox.core.v2.DbxClientV2;
-import com.dropbox.core.v2.files.WriteMode;
 import dev.bhdn.jobly.auth.service.dto.company.CompanyDto;
 import dev.bhdn.jobly.auth.service.dto.company.CompanyResponseDto;
-import dev.bhdn.jobly.auth.service.exception.UnacceptableContentTypeException;
 import dev.bhdn.jobly.auth.service.mapper.CompanyMapper;
 import dev.bhdn.jobly.auth.service.model.Company;
 import dev.bhdn.jobly.auth.service.repository.CompanyRepository;
 import dev.bhdn.jobly.auth.service.service.CompanyService;
 import dev.bhdn.jobly.auth.service.service.DropboxStorageService;
-import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
