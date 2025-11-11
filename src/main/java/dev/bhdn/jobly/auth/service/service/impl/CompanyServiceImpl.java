@@ -12,6 +12,7 @@ import dev.bhdn.jobly.auth.service.mapper.CompanyMapper;
 import dev.bhdn.jobly.auth.service.model.Company;
 import dev.bhdn.jobly.auth.service.repository.CompanyRepository;
 import dev.bhdn.jobly.auth.service.service.CompanyService;
+import dev.bhdn.jobly.auth.service.service.DropboxStorageService;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityNotFoundException;
 import java.io.IOException;
@@ -28,32 +29,15 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class CompanyServiceImpl implements CompanyService {
     private static final String FOLDER_PATH = "/Apps/Jobly/companies/";
-    private static final long CREDENTIAL_EXPIRES_AT = 0L;
-    private static final String IMAGE_JPEG = "image/jpeg";
-    private static final String IMAGE_PNG = "image/png";
     private final CompanyRepository companyRepository;
     private final CompanyMapper companyMapper;
-    private DbxClientV2 client;
-
-    @Value("${dropbox.access.token}")
-    private String dropboxAccessToken;
-
-    @Value("${dropbox.app.key}")
-    private String dropBoxAppKey;
-
-    @Value("${dropbox.app.secret}")
-    private String dropboxAppSecret;
-
-    @Value("${dropbox.refresh.token}")
-    private String dropboxRefreshToken;
-
-    @Value("${dropbox.client.id}")
-    private String dropboxClientId;
+    private final DropboxStorageService dropboxStorageService;
 
     @Override
     public CompanyResponseDto createCompany(CompanyDto companyDto, MultipartFile photo) {
         Company company = companyMapper.toModel(companyDto);
-        company.setLogoLink(savePhoto(photo, companyDto.getName()));
+        String path = FOLDER_PATH + companyDto.getName();
+        company.setLogoLink(dropboxStorageService.uploadPhoto(photo, path));
         return companyMapper.toDto(companyRepository.save(company));
     }
 
@@ -79,18 +63,21 @@ public class CompanyServiceImpl implements CompanyService {
     ) {
         Company company = companyRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
-
         Company updatedCompany = companyMapper.toModel(companyDto);
         updatedCompany.setLogoLink(company.getLogoLink());
 
-        if (!company.getName().equals(companyDto.getName())) {
-            updatePhotoName(company.getName(), companyDto.getName());
+        if (!company.getName().equals(companyDto.getName()) && photo.isEmpty()) {
+            String oldPath = FOLDER_PATH + company.getName();
+            String newPath = FOLDER_PATH + companyDto.getName();
+            dropboxStorageService.renamePhoto(oldPath, newPath);
         }
 
         if (company.getLogoLink() != null && !photo.isEmpty()) {
-            String path = FOLDER_PATH + company.getName();
-            deletePhoto(path);
-            updatedCompany.setLogoLink(savePhoto(photo, companyDto.getName()));
+            String pathToDelete = FOLDER_PATH + company.getName();
+            dropboxStorageService.deletePhoto(pathToDelete);
+
+            String pathToUpload = FOLDER_PATH + companyDto.getName();
+            updatedCompany.setLogoLink(dropboxStorageService.uploadPhoto(photo, pathToUpload));
         }
 
         updatedCompany.setId(company.getId());
@@ -104,64 +91,8 @@ public class CompanyServiceImpl implements CompanyService {
                 .orElseThrow(EntityNotFoundException::new);
 
         String path = FOLDER_PATH + company.getName();
-        deletePhoto(path);
+        dropboxStorageService.deletePhoto(path);
 
         companyRepository.delete(company);
-    }
-
-    @PostConstruct
-    private void initDropboxClient() {
-        DbxCredential credential = new DbxCredential(
-                dropboxAccessToken,
-                CREDENTIAL_EXPIRES_AT,
-                dropboxRefreshToken,
-                dropBoxAppKey,
-                dropboxAppSecret
-        );
-        DbxRequestConfig config = new DbxRequestConfig(dropboxClientId);
-        client = new DbxClientV2(config, credential);
-    }
-
-    private String savePhoto(MultipartFile photo, String companyName) {
-        String path = FOLDER_PATH + companyName;
-
-        validateContentType(Objects.requireNonNull(photo.getContentType()));
-
-        try (InputStream in = photo.getInputStream()) {
-            client.files().uploadBuilder(path)
-                    .withMode(WriteMode.ADD)
-                    .withClientModified(new Date(System.currentTimeMillis()))
-                    .uploadAndFinish(in);
-
-            return client.sharing().createSharedLinkWithSettings(path).getUrl() + "&raw=1";
-        } catch (IOException | DbxException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private void validateContentType(String contentType) {
-        if (!(contentType.equalsIgnoreCase(IMAGE_JPEG)
-                || contentType.equalsIgnoreCase(IMAGE_PNG))) {
-            throw new UnacceptableContentTypeException("Supports only JPG/PNG files");
-        }
-    }
-
-    private void deletePhoto(String path) {
-        try {
-            client.files().deleteV2(path);
-        } catch (DbxException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private void updatePhotoName(String oldName, String newName) {
-        String oldPath = FOLDER_PATH + oldName;
-        String newPath = FOLDER_PATH + newName;
-
-        try {
-            client.files().moveV2(oldPath, newPath);
-        } catch (DbxException e) {
-            throw new RuntimeException(e);
-        }
     }
 }
