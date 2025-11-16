@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-logo-path-column-to-companies-table
+      author: Bohdan Hovorukha
+      changes:
+        - addColumn:
+            tableName: companies
+            columns:
+              - column:
+                  name: logo_path
+                  type: varchar(255)

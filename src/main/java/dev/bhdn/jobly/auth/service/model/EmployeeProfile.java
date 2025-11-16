@@ -15,11 +15,15 @@ import java.util.HashSet;
 import java.util.Set;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Table(name = "employees")
 @Data
 @NoArgsConstructor
+@SQLDelete(sql = "UPDATE employees SET is_deleted = true WHERE id = ?")
+@SQLRestriction("is_deleted = false")
 public class EmployeeProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,6 +50,9 @@ public class EmployeeProfile {
     private int experience;
 
     private String job;
+
+    @Column(name = "logo_path")
+    private String logoPath;
 
     @Column(name = "logo_link")
     private String logoLink;

@@ -1,11 +1,12 @@
 package dev.bhdn.jobly.auth.service.service;
 
+import dev.bhdn.jobly.auth.service.dto.storage.PhotoResultDto;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface DropboxStorageService {
-    String uploadPhoto(MultipartFile photo, String path);
+    PhotoResultDto uploadPhoto(MultipartFile photo, String path);
 
-    void deletePhoto(String path);
+    PhotoResultDto updatePhoto(MultipartFile photo, String existingPath, String uniquePath);
 
-    void renamePhoto(String oldPath, String newPath);
+    String generateUniquePath(String folderPath);
 }

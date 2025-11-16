@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-logo-path-column-to-employee-profiles-table
+      author: Bohdan Hovorukha
+      changes:
+        - addColumn:
+            tableName: employees
+            columns:
+              - column:
+                  name: logo_path
+                  type: varchar(255)

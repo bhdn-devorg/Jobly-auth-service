@@ -10,6 +10,8 @@ public class EmployeeProfileDto {
     private Long userId;
     private Set<Long> skillIds;
     private Set<Long> languageIds;
+    private int experience;
+    private String job;
     private int salaryExpectations;
     private String description;
     private String phoneNumber;

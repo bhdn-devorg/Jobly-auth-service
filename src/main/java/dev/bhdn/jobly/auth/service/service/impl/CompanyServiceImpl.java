@@ -2,6 +2,7 @@ package dev.bhdn.jobly.auth.service.service.impl;
 
 import dev.bhdn.jobly.auth.service.dto.company.CompanyDto;
 import dev.bhdn.jobly.auth.service.dto.company.CompanyResponseDto;
+import dev.bhdn.jobly.auth.service.dto.storage.PhotoResultDto;
 import dev.bhdn.jobly.auth.service.mapper.CompanyMapper;
 import dev.bhdn.jobly.auth.service.model.Company;
 import dev.bhdn.jobly.auth.service.repository.CompanyRepository;
@@ -24,8 +25,16 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public CompanyResponseDto createCompany(CompanyDto companyDto, MultipartFile photo) {
         Company company = companyMapper.toModel(companyDto);
-        String path = FOLDER_PATH + companyDto.getName();
-        company.setLogoLink(dropboxStorageService.uploadPhoto(photo, path));
+        String uniquePath = dropboxStorageService.generateUniquePath(FOLDER_PATH);
+
+        if (!photo.isEmpty()) {
+            PhotoResultDto photoResultDto = dropboxStorageService.uploadPhoto(
+                    photo, uniquePath
+            );
+
+            company.setLogoLink(photoResultDto.getLogoLink());
+        }
+
         return companyMapper.toDto(companyRepository.save(company));
     }
 
@@ -52,23 +61,20 @@ public class CompanyServiceImpl implements CompanyService {
         Company company = companyRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
         Company updatedCompany = companyMapper.toModel(companyDto);
-        updatedCompany.setLogoLink(company.getLogoLink());
-
-        if (!company.getName().equals(companyDto.getName()) && photo.isEmpty()) {
-            String oldPath = FOLDER_PATH + company.getName();
-            String newPath = FOLDER_PATH + companyDto.getName();
-            dropboxStorageService.renamePhoto(oldPath, newPath);
-        }
-
-        if (company.getLogoLink() != null && !photo.isEmpty()) {
-            String pathToDelete = FOLDER_PATH + company.getName();
-            dropboxStorageService.deletePhoto(pathToDelete);
-
-            String pathToUpload = FOLDER_PATH + companyDto.getName();
-            updatedCompany.setLogoLink(dropboxStorageService.uploadPhoto(photo, pathToUpload));
-        }
-
         updatedCompany.setId(company.getId());
+
+        if (!photo.isEmpty()) {
+            String uniquePath = dropboxStorageService.generateUniquePath(FOLDER_PATH);
+            PhotoResultDto photoResultDto = dropboxStorageService.updatePhoto(
+                    photo, company.getLogoPath(), uniquePath
+            );
+
+            updatedCompany.setLogoPath(photoResultDto.getLogoPath());
+            updatedCompany.setLogoLink(photoResultDto.getLogoLink());
+        } else {
+            updatedCompany.setLogoPath(company.getLogoPath());
+            updatedCompany.setLogoLink(company.getLogoLink());
+        }
 
         return companyMapper.toDto(companyRepository.save(updatedCompany));
     }
@@ -77,10 +83,6 @@ public class CompanyServiceImpl implements CompanyService {
     public void deleteCompanyById(Long id) {
         Company company = companyRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
-
-        String path = FOLDER_PATH + company.getName();
-        dropboxStorageService.deletePhoto(path);
-
         companyRepository.delete(company);
     }
 }

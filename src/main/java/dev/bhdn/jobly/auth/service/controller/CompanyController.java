@@ -44,8 +44,8 @@ public class CompanyController {
     @PutMapping("/{id}")
     public CompanyResponseDto updateCompany(
             @PathVariable Long id,
-            @RequestPart(value = "photo", required = false) MultipartFile photo,
-            @RequestPart(value = "company") CompanyDto companyDto
+            @RequestPart(value = "company") CompanyDto companyDto,
+            @RequestPart(value = "photo", required = false) MultipartFile photo
     ) {
         return companyService.updateCompany(id, companyDto, photo);
     }

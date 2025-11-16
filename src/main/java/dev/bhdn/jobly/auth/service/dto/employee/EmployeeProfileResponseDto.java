@@ -11,6 +11,10 @@ public class EmployeeProfileResponseDto {
     private Long userId;
     private Set<Long> skillIds;
     private Set<Long> languageIds;
+    private int experience;
+    private String job;
+    private String logoPath;
+    private String logoLink;
     private int salaryExpectations;
     private String description;
     private String phoneNumber;

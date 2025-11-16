@@ -27,6 +27,9 @@ public class Company {
     @Column(nullable = false)
     private String name;
 
+    @Column(name = "logo_path")
+    private String logoPath;
+
     @Column(name = "logo_link")
     private String logoLink;
 
